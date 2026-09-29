@@ -75,6 +75,10 @@ app.use(cors());
 import apiRoutes from "./src/server/routes/api.js";
 app.use("/api", apiRoutes);
 
+app.get(["/install.sh", "/installer"], (req, res) => {
+  res.type("text/plain").sendFile(path.join(process.cwd(), "install.sh"));
+});
+
 async function startServer() {
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
