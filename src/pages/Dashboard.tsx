@@ -75,14 +75,9 @@ export default function Dashboard() {
           </div>
         </div>
         {user?.role === "admin" && (
-          <div className="flex items-center gap-3">
-            <Link to="/settings" className="px-4 py-2.5 bg-white/5 hover:bg-white/10 text-zinc-300 font-medium rounded-xl border border-white/5 transition-colors text-sm">
-              Setup Guide
-            </Link>
-            <Link to="/servers/create" className="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-black font-bold rounded-xl hover:from-amber-400 hover:to-orange-400 transition-all shadow-lg shadow-orange-500/20 text-sm whitespace-nowrap inline-flex items-center">
-              Deploy New Server
-            </Link>
-          </div>
+          <Link to="/servers/create" className="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-black font-bold rounded-xl hover:from-amber-400 hover:to-orange-400 transition-all shadow-lg shadow-orange-500/20 text-sm whitespace-nowrap inline-flex items-center">
+            Deploy New Server
+          </Link>
         )}
       </div>
       

@@ -3,7 +3,7 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useSettings } from "../context/SettingsContext";
 import { motion, AnimatePresence } from "framer-motion";
-import { Shield, User, Trash2, Layout, Terminal, Check, Copy, Flame, BookOpen } from "lucide-react";
+import { Shield, User, Trash2, Layout } from "lucide-react";
 
 export default function SettingsPage() {
   const { user } = useAuth();
@@ -14,17 +14,10 @@ export default function SettingsPage() {
   const [role, setRole] = useState("user");
   const [newPanelName, setNewPanelName] = useState(panelName);
   const [notification, setNotification] = useState<{ message: string; type: "success" | "error" } | null>(null);
-  const [copiedStep, setCopiedStep] = useState<string | null>(null);
 
   const showNotification = (message: string, type: "success" | "error" = "success") => {
     setNotification({ message, type });
     setTimeout(() => setNotification(null), 4000);
-  };
-
-  const copyToClipboard = (text: string, id: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedStep(id);
-    setTimeout(() => setCopiedStep(null), 2000);
   };
 
   useEffect(() => {
@@ -98,9 +91,9 @@ export default function SettingsPage() {
             <div className="w-10 h-10 rounded-full overflow-hidden border border-amber-500/50 shadow-[0_0_15px_rgba(249,115,22,0.4)] bg-black/60 flex-shrink-0">
               <img src="/logo.png" alt="FireCloud Logo" className="w-full h-full object-cover scale-110" />
             </div>
-            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white">Settings & Guide</h1>
+            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white">Settings</h1>
           </div>
-          <p className="text-zinc-400">Configure your account, panel branding, and review setup instructions.</p>
+          <p className="text-zinc-400">Configure your account and platform branding preferences.</p>
         </div>
       </div>
 
@@ -163,122 +156,6 @@ export default function SettingsPage() {
           </form>
         </div>
       )}
-
-      {/* Installation & VPS Setup Guide Section */}
-      <div className="bg-[#0a0a0c] border border-amber-500/20 rounded-2xl p-6 md:p-8 mb-8 shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-80 h-80 bg-orange-500/10 blur-[100px] rounded-full pointer-events-none" />
-        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-amber-500/60 to-transparent" />
-        
-        <div className="flex items-center gap-3 mb-6 relative z-10">
-          <div className="p-2.5 bg-gradient-to-br from-amber-500/20 to-orange-600/20 border border-amber-500/30 rounded-xl text-amber-400">
-            <BookOpen size={20} />
-          </div>
-          <div>
-            <h2 className="text-xl font-bold text-white flex items-center gap-2">
-              FireCloud Panel Installation Guide
-              <span className="text-[10px] uppercase font-bold tracking-wider bg-orange-500/20 text-orange-400 border border-orange-500/30 px-2 py-0.5 rounded-full">
-                VPS / Ubuntu / Debian
-              </span>
-            </h2>
-            <p className="text-sm text-zinc-400">Step-by-step instructions to install and host FireCloud Panel on your own Linux server.</p>
-          </div>
-        </div>
-
-        <div className="space-y-6 relative z-10">
-          {/* Step 1 */}
-          <div className="bg-white/[0.02] border border-white/5 rounded-xl p-5">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="font-semibold text-white text-sm flex items-center gap-2">
-                <span className="w-5 h-5 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold">1</span>
-                Update System & Install Node.js 20 + Docker
-              </h3>
-              <button 
-                onClick={() => copyToClipboard(`sudo apt update && sudo apt upgrade -y\ncurl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -\nsudo apt install -y nodejs git docker.io\nsudo systemctl enable --now docker\nsudo usermod -aG docker $USER`, "step1")}
-                className="text-xs flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-300 transition-colors"
-              >
-                {copiedStep === "step1" ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
-                {copiedStep === "step1" ? "Copied!" : "Copy"}
-              </button>
-            </div>
-            <pre className="bg-black/60 p-3.5 rounded-lg text-xs font-mono text-amber-300/90 overflow-x-auto border border-white/5">
-              <code>{`sudo apt update && sudo apt upgrade -y
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt install -y nodejs git docker.io
-sudo systemctl enable --now docker
-sudo usermod -aG docker $USER`}</code>
-            </pre>
-          </div>
-
-          {/* Step 2 */}
-          <div className="bg-white/[0.02] border border-white/5 rounded-xl p-5">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="font-semibold text-white text-sm flex items-center gap-2">
-                <span className="w-5 h-5 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold">2</span>
-                Clone Repository & Install Dependencies
-              </h3>
-              <button 
-                onClick={() => copyToClipboard(`git clone https://github.com/avinashboy746/Jtg.git firecloud\ncd firecloud\nnpm install`, "step2")}
-                className="text-xs flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-300 transition-colors"
-              >
-                {copiedStep === "step2" ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
-                {copiedStep === "step2" ? "Copied!" : "Copy"}
-              </button>
-            </div>
-            <pre className="bg-black/60 p-3.5 rounded-lg text-xs font-mono text-amber-300/90 overflow-x-auto border border-white/5">
-              <code>{`git clone https://github.com/avinashboy746/Jtg.git firecloud
-cd firecloud
-npm install`}</code>
-            </pre>
-          </div>
-
-          {/* Step 3 */}
-          <div className="bg-white/[0.02] border border-white/5 rounded-xl p-5">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="font-semibold text-white text-sm flex items-center gap-2">
-                <span className="w-5 h-5 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold">3</span>
-                Create Admin Account & Build
-              </h3>
-              <button 
-                onClick={() => copyToClipboard(`npm run build\nnpx tsx scripts/createuser.ts`, "step3")}
-                className="text-xs flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-300 transition-colors"
-              >
-                {copiedStep === "step3" ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
-                {copiedStep === "step3" ? "Copied!" : "Copy"}
-              </button>
-            </div>
-            <pre className="bg-black/60 p-3.5 rounded-lg text-xs font-mono text-amber-300/90 overflow-x-auto border border-white/5">
-              <code>{`npm run build
-npx tsx scripts/createuser.ts`}</code>
-            </pre>
-          </div>
-
-          {/* Step 4 */}
-          <div className="bg-white/[0.02] border border-white/5 rounded-xl p-5">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="font-semibold text-white text-sm flex items-center gap-2">
-                <span className="w-5 h-5 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold">4</span>
-                Run 24/7 in Background using PM2
-              </h3>
-              <button 
-                onClick={() => copyToClipboard(`sudo npm install -g pm2\npm2 start ecosystem.config.cjs\npm2 save\npm2 startup`, "step4")}
-                className="text-xs flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-300 transition-colors"
-              >
-                {copiedStep === "step4" ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
-                {copiedStep === "step4" ? "Copied!" : "Copy"}
-              </button>
-            </div>
-            <pre className="bg-black/60 p-3.5 rounded-lg text-xs font-mono text-amber-300/90 overflow-x-auto border border-white/5">
-              <code>{`sudo npm install -g pm2
-pm2 start ecosystem.config.cjs
-pm2 save
-pm2 startup`}</code>
-            </pre>
-            <p className="text-xs text-zinc-400 mt-2">
-              Access your panel in browser at: <span className="text-orange-400 font-mono">http://YOUR_SERVER_IP:3000</span>
-            </p>
-          </div>
-        </div>
-      </div>
 
       {user.role === "admin" && (
         <div className="bg-[#0a0a0c] border border-white/5 rounded-2xl p-6 md:p-8 shadow-xl relative overflow-hidden">
